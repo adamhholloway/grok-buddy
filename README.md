@@ -22,7 +22,16 @@ grok-buddy quit
 - **Click** for a joke
 - **Middle-click** to open Grok Build
 - **Double-click** to nap / wake
-- **Right-click** for Open Grok Build, jokes, voice, character, quit
+- **Right-click** for Bonzi-style tricks: say this, sing, dance, wander, follow the mouse, read the clipboard, search the web, tell the time
+
+```bash
+grok-buddy wander
+grok-buddy dance
+grok-buddy sing
+grok-buddy trick
+grok-buddy time
+grok-buddy follow on
+```
 
 He starts with the desktop and listens to Grok Build through hooks in `~/.grok/hooks/`.
 

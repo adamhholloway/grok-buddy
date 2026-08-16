@@ -15,7 +15,7 @@ gi.require_version("Gdk", "3.0")
 gi.require_version("PangoCairo", "1.0")
 from gi.repository import Gdk, GdkPixbuf, GLib, Gtk, Pango, PangoCairo
 
-from buddy import bus, config, launch, lines
+from buddy import bus, config, desktop, launch, lines
 from buddy.characters import CHARACTERS, DEFAULT_CHARACTER, resolve as resolve_character
 from buddy.paths import sprite_dir
 from buddy.sprites import missing_poses, process_character
@@ -61,6 +61,11 @@ class BuddyWindow(Gtk.Window):
         self.frame = 0
         self._shape = None
         self._save_pos_id = None
+        self.facing = 1
+        self._walk = None
+        self._dance_until = 0.0
+        self._jump_until = 0.0
+        self._last_follow = 0.0
 
         if missing_poses(self.cfg["character"]):
             process_character(self.cfg["character"])
@@ -139,9 +144,27 @@ class BuddyWindow(Gtk.Window):
             return it
 
         item("Open Grok Build", lambda *_: self.open_grok())
-        item("Tell a joke", lambda *_: self.say(self.pack.pick("jokes"), "talk"))
-        item("Grok Build tip", lambda *_: self.say(self.pack.pick("tips"), "think"))
         menu.append(Gtk.SeparatorMenuItem())
+        item("Say this…", lambda *_: self.prompt_say())
+        item("Tell a joke", lambda *_: self.say(self.pack.pick("jokes"), "talk"))
+        item("Sing", lambda *_: self.sing())
+        item("Dance", lambda *_: self.dance())
+        item("Do a trick", lambda *_: self.trick())
+        item("Get attention", lambda *_: self.attention())
+        item("Tell a story", lambda *_: self.say(self.pack.pick("stories"), "think"))
+        menu.append(Gtk.SeparatorMenuItem())
+        item("What time is it?", lambda *_: self.say(desktop.spoken_time(), "think"))
+        item("Read the clipboard", lambda *_: self.read_clipboard())
+        item("Search the web…", lambda *_: self.prompt_search())
+        item("Remember my name…", lambda *_: self.prompt_name())
+        menu.append(Gtk.SeparatorMenuItem())
+        item("Wander around", lambda *_: self.wander(announce=True))
+        self.follow_item = Gtk.CheckMenuItem(label="Follow the mouse")
+        self.follow_item.set_active(bool(self.cfg.get("follow_mouse")))
+        self.follow_item.connect("toggled", self._toggle_follow)
+        menu.append(self.follow_item)
+        menu.append(Gtk.SeparatorMenuItem())
+        item("Grok Build tip", lambda *_: self.say(self.pack.pick("tips"), "think"))
         item("Say something", lambda *_: self.say(self.pack.pick("greetings"), "talk"))
         menu.append(Gtk.SeparatorMenuItem())
         char_menu = Gtk.Menu()
@@ -169,6 +192,10 @@ class BuddyWindow(Gtk.Window):
         self.tips_item.set_active(bool(self.cfg.get("idle_tips")))
         self.tips_item.connect("toggled", self._toggle_tips)
         menu.append(self.tips_item)
+        self.wander_item = Gtk.CheckMenuItem(label="Wander when idle")
+        self.wander_item.set_active(bool(self.cfg.get("wander_idle")))
+        self.wander_item.connect("toggled", self._toggle_wander)
+        menu.append(self.wander_item)
         menu.append(Gtk.SeparatorMenuItem())
         item("Take a nap", lambda *_: self.nap())
         item("Hide for 15 minutes", lambda *_: self.snooze(15 * 60))
@@ -203,6 +230,177 @@ class BuddyWindow(Gtk.Window):
         x = max(work.x, min(x, work.x + work.width - 80))
         y = max(work.y, min(y, work.y + work.height - 80))
         self.move(x, y)
+
+    def _work_rect(self):
+        area = desktop.workarea()
+        return area.x, area.y, area.width, area.height
+
+    def walk_to(self, tx, ty, after=None):
+        sx, sy = self.get_position()
+        wx, wy, ww, wh = self._work_rect()
+        tx = max(wx, min(int(tx), wx + ww - 80))
+        ty = max(wy, min(int(ty), wy + wh - 80))
+        dist = math.hypot(tx - sx, ty - sy)
+        if dist < 12:
+            if after:
+                after()
+            return
+        self.facing = -1 if tx < sx else 1
+        self._walk = {
+            "sx": sx,
+            "sy": sy,
+            "tx": tx,
+            "ty": ty,
+            "t0": time.monotonic(),
+            "dur": max(0.55, min(2.6, dist / 480.0)),
+            "after": after,
+        }
+
+    def wander(self, announce=False):
+        wx, wy, ww, wh = self._work_rect()
+        tx = random.randint(wx + 8, max(wx + 8, wx + ww - WIN_W - 8))
+        ty = random.randint(wy + 8, max(wy + 8, wy + wh - WIN_H - 8))
+        line = self.pack.pick("wander") if announce else None
+
+        def done():
+            self.cfg["x"] = self.get_position()[0]
+            self.cfg["y"] = self.get_position()[1]
+            config.save(self.cfg)
+            if line:
+                self.say(line, "wave")
+            else:
+                self.flash("wave", 1.2)
+
+        self.walk_to(tx, ty, after=done)
+
+    def _step_walk(self, now):
+        walk = self._walk
+        if walk is None:
+            return
+        u = (now - walk["t0"]) / walk["dur"]
+        if u >= 1:
+            self.move(walk["tx"], walk["ty"])
+            after = walk.get("after")
+            self._walk = None
+            if after:
+                after()
+            return
+        ease = u * u * (3 - 2 * u)
+        x = walk["sx"] + (walk["tx"] - walk["sx"]) * ease
+        y = walk["sy"] + (walk["ty"] - walk["sy"]) * ease
+        self.move(int(x), int(y))
+
+    def _maybe_follow(self, now):
+        if not self.cfg.get("follow_mouse") or self.dragging or self._walk or self.hidden:
+            return
+        if now - self._last_follow < 0.7:
+            return
+        self._last_follow = now
+        px, py = desktop.pointer()
+        sx, sy = self.get_position()
+        target_x = px - WIN_W // 2
+        target_y = py - int(WIN_H * 0.72)
+        if math.hypot(target_x - sx, target_y - sy) > 160:
+            self.walk_to(target_x, target_y)
+
+    def dance(self):
+        self._dance_until = time.monotonic() + 4.2
+        self.say(self.pack.pick("dance"), "celebrate")
+
+    def sing(self):
+        self._dance_until = time.monotonic() + 3.0
+        self.say(self.pack.pick("songs"), "celebrate")
+
+    def jump(self):
+        self._jump_until = time.monotonic() + 0.55
+        self.flash("alert", 0.6)
+
+    def attention(self):
+        self.jump()
+        self.say(self.pack.pick("attention"), "alert")
+
+    def trick(self):
+        choice = random.choice(["dance", "wander", "joke", "sing", "jump", "story"])
+        if choice == "dance":
+            self.dance()
+        elif choice == "wander":
+            self.wander(announce=True)
+        elif choice == "joke":
+            self.say(self.pack.pick("jokes"), "talk")
+        elif choice == "sing":
+            self.sing()
+        elif choice == "jump":
+            self.jump()
+            self.say(self.pack.pick("trick"), "celebrate")
+        else:
+            self.say(self.pack.pick("stories"), "think")
+
+    def read_clipboard(self):
+        text = desktop.clipboard_text()
+        if not text:
+            self.say(self.pack.pick("empty_clip"), "sad")
+            return
+        text = " ".join(text.split())
+        if len(text) > 280:
+            text = text[:277] + "..."
+        self.say("It says: " + text, "work")
+
+    def prompt_say(self):
+        self._prompt("Say this", "Type something for me to say.", self._on_typed_say)
+
+    def _on_typed_say(self, text):
+        self.say(text, "talk")
+
+    def prompt_search(self):
+        self._prompt("Search the web", "What should I search for?", self._on_search)
+
+    def _on_search(self, query):
+        if desktop.open_search(query):
+            self.say(self.pack.pick("search"), "work")
+        else:
+            self.say("I couldn't open a browser.", "sad")
+
+    def prompt_name(self):
+        self._prompt(
+            "Remember my name",
+            "What should I call you?",
+            self._on_name,
+            placeholder=self.cfg.get("user_name") or "",
+        )
+
+    def _on_name(self, name):
+        self.cfg["user_name"] = name
+        config.save(self.cfg)
+        self.say(self.pack.pick("named"), "wave")
+
+    def _prompt(self, title, label, on_ok, placeholder=""):
+        dialog = Gtk.Dialog(title=title)
+        dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
+        dialog.add_button("OK", Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+        dialog.set_keep_above(True)
+        dialog.set_type_hint(Gdk.WindowTypeHint.DIALOG)
+        dialog.set_position(Gtk.WindowPosition.CENTER)
+        box = dialog.get_content_area()
+        box.set_spacing(8)
+        box.set_border_width(14)
+        box.add(Gtk.Label(label=label, xalign=0))
+        entry = Gtk.Entry()
+        entry.set_activates_default(True)
+        if placeholder:
+            entry.set_text(placeholder)
+            entry.select_region(0, -1)
+        box.pack_start(entry, True, True, 0)
+
+        def respond(_d, response):
+            text = entry.get_text().strip()
+            dialog.destroy()
+            if response == Gtk.ResponseType.OK and text:
+                on_ok(text)
+
+        dialog.connect("response", respond)
+        dialog.show_all()
+        dialog.present()
 
     def open_grok(self):
         ok, err = launch.open_grok()
@@ -241,6 +439,10 @@ class BuddyWindow(Gtk.Window):
             return self.overlay
         if self.overlay and now >= self.overlay_until:
             self.overlay = None
+        if now < self._dance_until:
+            return ("celebrate", "wave", "idle", "celebrate")[self.frame // 4 % 4]
+        if self._walk is not None:
+            return "work" if "work" in self.sprites else "idle"
         if self.base_mood == "idle" and not self.talking:
             if now - self.last_blink >= self.next_blink:
                 self.last_blink = now
@@ -270,6 +472,11 @@ class BuddyWindow(Gtk.Window):
         bob = 0.0
         if self.base_mood != "sleep" and pose not in {"sleep"}:
             bob = math.sin((time.monotonic() - self.t0) * 2.15) * 3.2
+        if time.monotonic() < self._jump_until:
+            t = self._jump_until - time.monotonic()
+            bob -= abs(math.sin((0.55 - t) * math.pi / 0.55)) * 36
+        if self._walk is not None:
+            bob += abs(math.sin(time.monotonic() * 10)) * 4
         return pixbuf, scale, cx - w / 2.0, feet_y - h + bob, w, h
 
     def _on_draw(self, _widget, cr):
@@ -290,8 +497,12 @@ class BuddyWindow(Gtk.Window):
         cr.restore()
 
         cr.save()
-        cr.translate(x, y)
-        cr.scale(scale, scale)
+        if self.facing < 0:
+            cr.translate(x + w, y)
+            cr.scale(-scale, scale)
+        else:
+            cr.translate(x, y)
+            cr.scale(scale, scale)
         Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0)
         cr.paint()
         cr.restore()
@@ -382,6 +593,7 @@ class BuddyWindow(Gtk.Window):
                 if bx <= event.x <= bx + bw and by <= event.y <= by + bh:
                     self.dismiss()
                     return True
+            self._walk = None
             self.dragging = True
             self.moved = False
             self.drag_ox = int(event.x_root)
@@ -448,6 +660,8 @@ class BuddyWindow(Gtk.Window):
     def say(self, text, mood="talk", voice=True):
         if not text:
             return
+        name = (self.cfg.get("user_name") or "").strip() or "you"
+        text = text.replace("{name}", name)
         self.bubble_text = text
         hold = max(4.5, min(16.0, 1.6 + len(text) / 18.0))
         self.bubble_until = time.monotonic() + hold
@@ -532,6 +746,16 @@ class BuddyWindow(Gtk.Window):
         self.cfg["idle_tips"] = bool(item.get_active())
         config.save(self.cfg)
 
+    def _toggle_follow(self, item):
+        on = bool(item.get_active())
+        self.cfg["follow_mouse"] = on
+        config.save(self.cfg)
+        self.say(self.pack.pick("follow_on" if on else "follow_off"), "wave")
+
+    def _toggle_wander(self, item):
+        self.cfg["wander_idle"] = bool(item.get_active())
+        config.save(self.cfg)
+
     def _on_character_item(self, item, key):
         if not item.get_active():
             return
@@ -562,19 +786,25 @@ class BuddyWindow(Gtk.Window):
         self.frame += 1
         if self.talking and self.frame % 2 == 0:
             self.talk_toggle = not self.talk_toggle
+        self._step_walk(now)
+        self._maybe_follow(now)
         if self.bubble_text and self.bubble_until and now > self.bubble_until and not self.talking:
             self.dismiss()
         idle_for = float(self.cfg.get("idle_seconds") or 240)
         if (
-            self.cfg.get("idle_tips")
-            and not self.busy
+            not self.busy
             and not self.hidden
             and self.base_mood != "sleep"
             and not self.bubble_text
+            and self._walk is None
+            and now >= self._dance_until
             and now - self.last_tip > idle_for
         ):
             self.last_tip = now
-            self.say(self.pack.chatter(), random.choice(["talk", "think"]))
+            if self.cfg.get("wander_idle") and random.random() < 0.4:
+                self.wander(announce=True)
+            elif self.cfg.get("idle_tips"):
+                self.say(self.pack.chatter(), random.choice(["talk", "think"]))
         self.queue_draw()
         return True
 
@@ -588,6 +818,24 @@ class BuddyWindow(Gtk.Window):
             self.say(self.pack.pick("jokes"), "talk")
         elif kind == "grok":
             self.open_grok()
+        elif kind == "dance":
+            self.dance()
+        elif kind == "sing":
+            self.sing()
+        elif kind == "trick":
+            self.trick()
+        elif kind == "wander":
+            self.wander(announce=True)
+        elif kind == "time":
+            self.say(desktop.spoken_time(), "think")
+        elif kind == "follow":
+            on = bool(message.get("on", not self.cfg.get("follow_mouse")))
+            self.cfg["follow_mouse"] = on
+            if self.follow_item.get_active() != on:
+                self.follow_item.set_active(on)
+            else:
+                config.save(self.cfg)
+                self.say(self.pack.pick("follow_on" if on else "follow_off"), "wave")
         elif kind == "hide":
             self.snooze(15 * 60)
         elif kind == "wake":
@@ -685,6 +933,12 @@ def main(argv=None):
         "tip",
         "joke",
         "grok",
+        "dance",
+        "sing",
+        "trick",
+        "wander",
+        "time",
+        "follow",
         "mood",
         "event",
         "character",

@@ -34,6 +34,19 @@ def send_cli(argv):
         ok = send({"type": "joke"})
     elif cmd in {"grok", "open"}:
         ok = send({"type": "grok"})
+    elif cmd == "dance":
+        ok = send({"type": "dance"})
+    elif cmd == "sing":
+        ok = send({"type": "sing"})
+    elif cmd == "trick":
+        ok = send({"type": "trick"})
+    elif cmd == "wander":
+        ok = send({"type": "wander"})
+    elif cmd == "time":
+        ok = send({"type": "time"})
+    elif cmd == "follow":
+        flag = (argv[1].lower() if len(argv) > 1 else "on")
+        ok = send({"type": "follow", "on": flag not in {"off", "0", "false", "stop"}})
     elif cmd == "hide":
         ok = send({"type": "hide"})
     elif cmd == "wake":

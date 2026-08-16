@@ -17,6 +17,9 @@ DEFAULTS = {
     "voice_name": "English (America)+female1",
     "voice_rate": -10,
     "voice_pitch": 10,
+    "user_name": "",
+    "follow_mouse": False,
+    "wander_idle": True,
 }
 
 

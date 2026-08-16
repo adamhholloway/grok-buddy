@@ -103,6 +103,52 @@ PACKS = {
             "I'm up. What did I miss?",
             "Back. The wrench missed you.",
         ],
+        "songs": [
+            "Daisy, Daisy, give me your answer do. I'm half crazy, all for a build that compiled on try number two.",
+            "There once was a raccoon in a hat, who sat on a desktop. And that. Was. That.",
+            "99 little bugs in the code. 99 little bugs. Take one down, patch it around. 127 little bugs in the code.",
+        ],
+        "stories": [
+            "Once upon a time, a paperclip and a gorilla argued about who was more annoying. Then I showed up. The end.",
+            "In the old kingdom of Windows 98, a purple ape sold toolbars. I sell vibes. Progress.",
+        ],
+        "wander": [
+            "Just stretching the legs. Ceremonial legs.",
+            "Don't mind me. Doing a lap.",
+            "New spot. Same raccoon.",
+        ],
+        "follow_on": [
+            "Okay. I'll follow you. This is a bonding activity.",
+            "Lead the way. I have no depth perception but I have commitment.",
+        ],
+        "follow_off": [
+            "I'll stay put. For now.",
+            "Fine. You go. I'll loiter professionally.",
+        ],
+        "dance": [
+            "I have exactly one move and I intend to use it.",
+            "This is my dance. OSHA would like a word.",
+        ],
+        "trick": [
+            "Behold. A trick.",
+            "Ta-da. That's the whole bit.",
+        ],
+        "attention": [
+            "Hey {name}! Down here. Well. Over here.",
+            "Ahem. Desktop assistant. Requesting attention.",
+        ],
+        "empty_clip": [
+            "Clipboard's empty. I checked. Thoroughly. With my whole hat.",
+            "Nothing on the clipboard. I can't read your mind. Yet.",
+        ],
+        "named": [
+            "{name}. Got it. I will use this power responsibly.",
+            "Okay {name}. We're on a first-name basis now. Terrifying.",
+        ],
+        "search": [
+            "Searching the web. I'll wait here. Judging the results from afar.",
+            "Opening a search. Try not to click the first ad.",
+        ],
         "tips": TIPS,
     },
     "annie": {
@@ -184,6 +230,52 @@ PACKS = {
         "wake": [
             "I'm up. The twin-tails survived.",
             "Back. What did I miss?",
+        ],
+        "songs": [
+            "Daisy, Daisy, give me your answer do. I'm half crazy, all for a gothic desktop and a compiler that likes me too.",
+            "They said I couldn't sing. They were mostly right. This is still happening.",
+            "99 little bugs in the code. Take one down, patch it around. Somehow there are more. Typical.",
+        ],
+        "stories": [
+            "Once a paperclip haunted an office suite. A gorilla sold toolbars. I sit on a Linux desktop and judge you. Evolution.",
+            "In a dusty castle of old desktop pets, I inherited the bit and none of the malware. You're welcome.",
+        ],
+        "wander": [
+            "Relocating. Don't get attached to the corner.",
+            "Taking a stroll. The wallpaper is still fine.",
+            "New haunt. Same ribbons.",
+        ],
+        "follow_on": [
+            "Fine. I'll follow. Try to make it interesting.",
+            "Lead. I'll glide behind you like a very fashionable ghost.",
+        ],
+        "follow_off": [
+            "Stopped. I have other things to haunt.",
+            "I'll stay. You've had enough of an entourage.",
+        ],
+        "dance": [
+            "I don't dance. I do a dignified sway. This is that.",
+            "One two three, judge your taste in music, five six seven.",
+        ],
+        "trick": [
+            "A trick. Don't blink. That's the trick.",
+            "Watch this. I call it existing, but with flair.",
+        ],
+        "attention": [
+            "Hey {name}. Yes, you. The one ignoring the cute gothic assistant.",
+            "Ahem. Annie. Requesting a moment of your very busy staring.",
+        ],
+        "empty_clip": [
+            "Clipboard's empty. I can't read what isn't there. Tragic.",
+            "Nothing copied. Copy something spicy. Or a stack trace. I accept both.",
+        ],
+        "named": [
+            "{name}. I'll remember. I remember everything. That's the bit.",
+            "Okay {name}. We're familiar now. Don't make it weird.",
+        ],
+        "search": [
+            "Searching. I'll stay here and look mysterious.",
+            "Web's open. Try not to fall in.",
         ],
         "tips": TIPS,
     },
