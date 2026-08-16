@@ -8,6 +8,8 @@ Two characters: **Buddy** (raccoon in a hard hat) and **Annie** (gothic lolita, 
 
 ```bash
 grok-buddy                 # start (or poke the one already running)
+grok-buddy grok            # open Grok Build in a terminal
+grok-buddy joke            # a dumb line
 grok-buddy say "hey"       # make them talk
 grok-buddy character annie # switch to Annie
 grok-buddy character buddy # switch to Buddy
@@ -17,9 +19,10 @@ grok-buddy quit
 ```
 
 - **Drag** to move
-- **Click** for a tip
+- **Click** for a joke
+- **Middle-click** to open Grok Build
 - **Double-click** to nap / wake
-- **Right-click** for voice, idle chatter, hide, quit
+- **Right-click** for Open Grok Build, jokes, voice, character, quit
 
 He starts with the desktop and listens to Grok Build through hooks in `~/.grok/hooks/`.
 

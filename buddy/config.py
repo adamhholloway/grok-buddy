@@ -12,9 +12,9 @@ DEFAULTS = {
     "scale": 1.0,
     "welcomed": False,
     "character": "annie",
-    "voice_name": "English (America)+Annie",
-    "voice_rate": 18,
-    "voice_pitch": 50,
+    "voice_name": "English (America)+female1",
+    "voice_rate": -10,
+    "voice_pitch": 10,
 }
 
 

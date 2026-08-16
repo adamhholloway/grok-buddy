@@ -34,9 +34,12 @@ class Voice:
                 on_end()
             return False
         try:
+            from buddy.speaktext import for_voice
+
+            spoken = for_voice(text) or text
             with self._lock:
                 self._speaking = True
-                self._client.speak(text, self._callback)
+                self._client.speak(spoken, self._callback)
             return True
         except Exception:
             self._speaking = False
@@ -84,9 +87,13 @@ class Voice:
                     client.set_synthesis_voice("English (America)")
                 except Exception:
                     pass
-            client.set_rate(int(self.cfg.get("voice_rate", 12)))
-            client.set_pitch(int(self.cfg.get("voice_pitch", 35)))
-            client.set_punctuation(speechd.PunctuationMode.SOME)
+            client.set_rate(int(self.cfg.get("voice_rate", -10)))
+            client.set_pitch(int(self.cfg.get("voice_pitch", 10)))
+            client.set_punctuation(speechd.PunctuationMode.NONE)
+            try:
+                client.set_cap_let_recogn("none")
+            except Exception:
+                pass
             self._client = client
             return True
         except Exception:

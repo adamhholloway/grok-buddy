@@ -15,7 +15,7 @@ gi.require_version("Gdk", "3.0")
 gi.require_version("PangoCairo", "1.0")
 from gi.repository import Gdk, GdkPixbuf, GLib, Gtk, Pango, PangoCairo
 
-from buddy import bus, config, lines
+from buddy import bus, config, launch, lines
 from buddy.characters import CHARACTERS, DEFAULT_CHARACTER, resolve as resolve_character
 from buddy.paths import sprite_dir
 from buddy.sprites import missing_poses, process_character
@@ -138,8 +138,11 @@ class BuddyWindow(Gtk.Window):
             menu.append(it)
             return it
 
-        item("Say something", lambda *_: self.say(self.pack.pick("greetings"), "talk"))
+        item("Open Grok Build", lambda *_: self.open_grok())
+        item("Tell a joke", lambda *_: self.say(self.pack.pick("jokes"), "talk"))
         item("Grok Build tip", lambda *_: self.say(self.pack.pick("tips"), "think"))
+        menu.append(Gtk.SeparatorMenuItem())
+        item("Say something", lambda *_: self.say(self.pack.pick("greetings"), "talk"))
         menu.append(Gtk.SeparatorMenuItem())
         char_menu = Gtk.Menu()
         self.char_items = {}
@@ -200,6 +203,13 @@ class BuddyWindow(Gtk.Window):
         x = max(work.x, min(x, work.x + work.width - 80))
         y = max(work.y, min(y, work.y + work.height - 80))
         self.move(x, y)
+
+    def open_grok(self):
+        ok, err = launch.open_grok()
+        if ok:
+            self.say(self.pack.pick("launch"), "work")
+        else:
+            self.say(err or self.pack.pick("launch_fail"), "sad")
 
     def park_corner(self):
         self.cfg["x"] = None
@@ -351,6 +361,9 @@ class BuddyWindow(Gtk.Window):
         if event.button == 3:
             self.menu.popup_at_pointer(event)
             return True
+        if event.button == 2:
+            self.open_grok()
+            return True
         if event.button == 1:
             if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS:
                 if self._click_id:
@@ -427,7 +440,7 @@ class BuddyWindow(Gtk.Window):
         if self.busy:
             self.say(self.pack.pick("click_busy"), "talk")
             return
-        pool = list(self.pack.get("greetings")) + list(self.pack.get("tips"))
+        pool = list(self.pack.get("jokes")) + list(self.pack.get("greetings"))
         self.say(random.choice(pool), random.choice(["talk", "wave", "think"]))
 
     def say(self, text, mood="talk", voice=True):
@@ -559,7 +572,7 @@ class BuddyWindow(Gtk.Window):
             and now - self.last_tip > idle_for
         ):
             self.last_tip = now
-            self.say(self.pack.pick("tips"), "think")
+            self.say(self.pack.chatter(), random.choice(["talk", "think"]))
         self.queue_draw()
         return True
 
@@ -569,6 +582,10 @@ class BuddyWindow(Gtk.Window):
             self.say(message.get("text") or "", message.get("mood") or "talk")
         elif kind == "tip":
             self.say(self.pack.pick("tips"), "think")
+        elif kind == "joke":
+            self.say(self.pack.pick("jokes"), "talk")
+        elif kind == "grok":
+            self.open_grok()
         elif kind == "hide":
             self.snooze(15 * 60)
         elif kind == "wake":
@@ -658,7 +675,18 @@ def another_instance_alive():
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] in {"say", "hide", "quit", "wake", "tip", "mood", "event", "character"}:
+    if argv and argv[0] in {
+        "say",
+        "hide",
+        "quit",
+        "wake",
+        "tip",
+        "joke",
+        "grok",
+        "mood",
+        "event",
+        "character",
+    }:
         return bus.send_cli(argv)
 
     if another_instance_alive():

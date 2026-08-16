@@ -30,6 +30,10 @@ def send_cli(argv):
         ok = send({"type": "say", "text": text, "mood": "talk"})
     elif cmd == "tip":
         ok = send({"type": "tip"})
+    elif cmd == "joke":
+        ok = send({"type": "joke"})
+    elif cmd in {"grok", "open"}:
+        ok = send({"type": "grok"})
     elif cmd == "hide":
         ok = send({"type": "hide"})
     elif cmd == "wake":

@@ -2,16 +2,16 @@ CHARACTERS = {
     "buddy": {
         "id": "buddy",
         "label": "Buddy",
-        "voice_name": "English (America)+Tweaky",
-        "voice_rate": 12,
-        "voice_pitch": 35,
+        "voice_name": "English (America)+male1",
+        "voice_rate": -12,
+        "voice_pitch": -6,
     },
     "annie": {
         "id": "annie",
         "label": "Annie",
-        "voice_name": "English (America)+Annie",
-        "voice_rate": 18,
-        "voice_pitch": 50,
+        "voice_name": "English (America)+female1",
+        "voice_rate": -10,
+        "voice_pitch": 10,
     },
 }
 
