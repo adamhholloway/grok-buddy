@@ -35,6 +35,7 @@ class Voice:
         self.cfg["voice_model"] = spec.get("voice_model")
         self.cfg["voice_rate"] = spec.get("voice_rate", 0)
         self.cfg["voice_pitch"] = spec.get("voice_pitch", 0)
+        self.cfg["voice_length"] = spec.get("voice_length", 1.05)
         self.close()
 
     def speak(self, text, on_end=None):
@@ -111,7 +112,7 @@ class Voice:
                         "--output_file",
                         wav_path,
                         "--length_scale",
-                        "1.05",
+                        str(self.cfg.get("voice_length") or 1.05),
                         "--quiet",
                     ],
                     input=text.encode("utf-8"),

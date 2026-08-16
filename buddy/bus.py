@@ -62,7 +62,7 @@ def send_cli(argv):
         ok = send({"type": "mood", "mood": argv[1]})
     elif cmd == "character":
         if len(argv) < 2:
-            print("usage: grok-buddy character <buddy|annie>", file=sys.stderr)
+            print("usage: grok-buddy character <buddy|annie|miku>", file=sys.stderr)
             return 2
         ok = send({"type": "character", "character": argv[1]})
     elif cmd == "event":

@@ -2,7 +2,7 @@
 
 A desktop pet for Grok Build on this computer. They sit on top of your windows, talk in a speech bubble (and out loud if you want), and react when a Grok session starts, needs permission, or finishes a turn.
 
-Two characters: **Buddy** (raccoon in a hard hat) and **Annie** (3D gothic companion, neural Amy voice). Right-click to switch. Annie's voice is Piper; run `scripts/fetch_voice.sh` if she falls back to espeak.
+Three characters: **Buddy** (raccoon in a hard hat), **Annie** (3D gothic companion), and **Hatsune Miku**. Right-click → Character to switch. Annie and Miku use Piper; run `scripts/fetch_voice.sh` if they fall back to espeak.
 
 ## Use it
 
@@ -13,6 +13,7 @@ grok-buddy joke            # a dumb line
 grok-buddy say "hey"       # make them talk
 grok-buddy character annie # switch to Annie
 grok-buddy character buddy # switch to Buddy
+grok-buddy character miku  # Hatsune Miku
 grok-buddy tip             # random Grok Build tip
 grok-buddy hide            # vanish for 15 minutes
 grok-buddy quit

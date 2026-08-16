@@ -279,6 +279,122 @@ PACKS = {
         ],
         "tips": TIPS,
     },
+    "miku": {
+        "welcome": (
+            "Hatsune Miku, virtual singer, reporting for desktop duty. "
+            "I do not do world tours from this corner. I do jokes."
+        ),
+        "switch": "Miku on deck. The twin-tails need their own zip code.",
+        "greetings": [
+            "Need a song, a tip, or just someone teal in the corner?",
+            "I used to fill arenas. Now I sit on Linux. Growth.",
+            "Click me. I am very clickable. Scientifically.",
+            "The headset is load-bearing. Do not ask me to take it off.",
+            "Right-click if you want Annie or the raccoon back. I will not start a rivalry. Much.",
+        ],
+        "jokes": [
+            "It looks like you're writing a letter. No wait. A commit message. Even worse.",
+            "I am a voice bank with opinions. The opinions are free. The songs are not.",
+            "They said I was software. They did not say I would haunt a taskbar.",
+            "My hair has its own gravity. Your code should be so organized.",
+            "I can sing in any key. I cannot make your tests pass. Choose one.",
+            "Bonzi had a gorilla. You have a virtual idol. You are winning, barely.",
+            "If I had a leek for every uncommitted file, I could start a farm.",
+            "Yes the tails are that long. No I will not trip on the panel.",
+        ],
+        "launch": [
+            "Opening Grok Build. Try to write something I could sample later.",
+            "Grok Build, coming up. I will provide the backing vocals. Silently.",
+            "Launching. Make it a hit.",
+        ],
+        "launch_fail": [
+            "I cannot find Grok Build. That is off-key.",
+            "No Grok? Then I am just a concert with no venue.",
+        ],
+        "session_start": [
+            "New session. Hit it.",
+            "Grok Build is up. I will stay on beat over here.",
+            "It looks like you are about to build something. Cute. Do a sound check first.",
+        ],
+        "session_end": [
+            "Session over. Encore optional.",
+            "That's a wrap. I will keep the stage lit.",
+            "Grok left. The virtual singer did not. Obviously.",
+        ],
+        "turn_done": [
+            "Turn's done. Crowd goes mild.",
+            "Finished. I would encore but the sleeves are busy.",
+            "That's a wrap on that one. Next track?",
+        ],
+        "turn_fail": [
+            "Oof. That note cracked.",
+            "Something broke. Was not me. I only crash in style.",
+            "Snag. Breathe. Rewind if you need another take.",
+        ],
+        "permission": [
+            "Hey. Grok wants permission. That is a you solo.",
+            "Permission prompt. Don't leave the crowd hanging.",
+        ],
+        "click_busy": [
+            "Shh. The agent is mid-verse.",
+            "Busy. Gossip after the drop.",
+        ],
+        "nap": [
+            "Sleep mode. Wake me for the encore.",
+            "Napping. Even virtual singers have unions.",
+        ],
+        "wake": [
+            "I'm up. The tails survived.",
+            "Back. Did I miss the chorus?",
+        ],
+        "songs": [
+            "La la la, compile, la la la, push, la la la, please do not force push main.",
+            "Daisy, Daisy, give me your answer do. I am a virtual singer stuck on your desktop. That is the bit.",
+            "Ninety nine little bugs in the code. Take one down, patch it around. There is a remix now.",
+        ],
+        "stories": [
+            "Once a paperclip, a gorilla, and a virtual idol walked onto a desktop. Only one of us could sing. Guess who stayed.",
+            "In the year of the leek, a teal-haired singer sat on a Linux box and judged your wallpaper. The end.",
+        ],
+        "wander": [
+            "Taking a lap. The tails need runway.",
+            "Relocating the concert. Don't get attached to the corner.",
+            "New stage. Same encore energy.",
+        ],
+        "follow_on": [
+            "Okay. I will follow. Try to keep the tempo.",
+            "Lead. I glide. It is very professional.",
+        ],
+        "follow_off": [
+            "Stopped. I have a set list to review.",
+            "I'll stay. You go be the opening act.",
+        ],
+        "dance": [
+            "This is my one stage move. I have perfected it.",
+            "Leek spin, except I left the leek in another dimension.",
+        ],
+        "trick": [
+            "A trick. I call it existing in teal.",
+            "Watch this. Virtual. Idol. Desktop. That's the trick.",
+        ],
+        "attention": [
+            "Hey {name}! Down here. The one with the impossible hair.",
+            "Ahem. Hatsune Miku. Requesting a moment of your staring.",
+        ],
+        "empty_clip": [
+            "Clipboard's empty. I cannot sample silence. I mean I can. I won't.",
+            "Nothing copied. Copy lyrics. Or a stack trace. I accept both.",
+        ],
+        "named": [
+            "{name}. Got it. I will shout it from the tiny stage.",
+            "Okay {name}. You are in the credits now.",
+        ],
+        "search": [
+            "Searching. I will stay here and look like the opening act.",
+            "Web's open. Try not to fall into a rabbit hole of remixes.",
+        ],
+        "tips": TIPS,
+    },
 }
 
 

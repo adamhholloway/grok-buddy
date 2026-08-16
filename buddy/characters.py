@@ -16,6 +16,18 @@ CHARACTERS = {
         "voice_name": "English (America)+female1",
         "voice_rate": -10,
         "voice_pitch": 10,
+        "voice_length": 1.05,
+        "sprite_height": 300,
+    },
+    "miku": {
+        "id": "miku",
+        "label": "Hatsune Miku",
+        "voice_engine": "piper",
+        "voice_model": "en_US-amy-medium",
+        "voice_name": "English (America)+female1",
+        "voice_rate": 8,
+        "voice_pitch": 35,
+        "voice_length": 0.86,
         "sprite_height": 300,
     },
 }
