@@ -17,7 +17,7 @@ from gi.repository import Gdk, GdkPixbuf, GLib, Gtk, Pango, PangoCairo
 
 from buddy import bus, config, desktop, launch, lines
 from buddy.characters import CHARACTERS, DEFAULT_CHARACTER, resolve as resolve_character
-from buddy.paths import sprite_dir
+from buddy.paths import FIDGET_POSES, NO_FLIP, POSES, SHOW_POSES, WALK_POSES, sprite_dir
 from buddy.sprites import missing_poses, process_character
 from buddy.voice import Voice
 
@@ -66,6 +66,10 @@ class BuddyWindow(Gtk.Window):
         self._dance_until = 0.0
         self._jump_until = 0.0
         self._last_follow = 0.0
+        self._fidget_pose = None
+        self._fidget_until = 0.0
+        self._next_fidget = time.monotonic() + random.uniform(3.0, 5.5)
+        self._showcase = None
 
         if missing_poses(self.cfg["character"]):
             process_character(self.cfg["character"])
@@ -115,18 +119,7 @@ class BuddyWindow(Gtk.Window):
     def _load_sprites(self):
         folder = sprite_dir(self.cfg.get("character") or DEFAULT_CHARACTER)
         self.sprites = {}
-        for pose in (
-            "idle",
-            "blink",
-            "talk",
-            "wave",
-            "think",
-            "work",
-            "celebrate",
-            "sad",
-            "sleep",
-            "alert",
-        ):
+        for pose in POSES:
             path = folder / f"{pose}.png"
             if not path.exists():
                 continue
@@ -159,6 +152,7 @@ class BuddyWindow(Gtk.Window):
         item("Remember my name…", lambda *_: self.prompt_name())
         menu.append(Gtk.SeparatorMenuItem())
         item("Wander around", lambda *_: self.wander(announce=True))
+        item("Strike a pose", lambda *_: self.showcase_poses())
         self.follow_item = Gtk.CheckMenuItem(label="Follow the mouse")
         self.follow_item.set_active(bool(self.cfg.get("follow_mouse")))
         self.follow_item.connect("toggled", self._toggle_follow)
@@ -215,7 +209,13 @@ class BuddyWindow(Gtk.Window):
             self.cfg["welcomed"] = True
             config.save(self.cfg)
         else:
-            self.flash("wave", 1.8)
+            self.flash("wave", 1.2)
+            GLib.timeout_add(700, self._demo_wander)
+        return False
+
+    def _demo_wander(self):
+        if not self.hidden and self.base_mood != "sleep":
+            self.wander(announce=True)
         return False
 
     def place_window(self, force_corner=False):
@@ -252,7 +252,7 @@ class BuddyWindow(Gtk.Window):
             "tx": tx,
             "ty": ty,
             "t0": time.monotonic(),
-            "dur": max(0.55, min(2.6, dist / 480.0)),
+            "dur": max(0.9, min(3.4, dist / 320.0)),
             "after": after,
         }
 
@@ -273,6 +273,25 @@ class BuddyWindow(Gtk.Window):
 
         self.walk_to(tx, ty, after=done)
 
+    def showcase_poses(self):
+        poses = [p for p in SHOW_POSES if p in self.sprites]
+        if not poses:
+            return
+        self._showcase = poses
+        self._fidget_pose = None
+        self.say("Okay. A little fashion show.", "wave")
+        GLib.timeout_add(850, self._step_showcase)
+
+    def _step_showcase(self):
+        if not self._showcase:
+            return False
+        self._showcase = self._showcase[1:]
+        if not self._showcase:
+            self.flash("wave", 1.0)
+            return False
+        self.queue_draw()
+        return True
+
     def _step_walk(self, now):
         walk = self._walk
         if walk is None:
@@ -289,6 +308,28 @@ class BuddyWindow(Gtk.Window):
         x = walk["sx"] + (walk["tx"] - walk["sx"]) * ease
         y = walk["sy"] + (walk["ty"] - walk["sy"]) * ease
         self.move(int(x), int(y))
+
+    def _maybe_fidget(self, now):
+        if (
+            self._walk
+            or self._showcase
+            or self.hidden
+            or self.talking
+            or self.busy
+            or self.base_mood == "sleep"
+            or now < self._dance_until
+        ):
+            return
+        if self._fidget_pose and now >= self._fidget_until:
+            self._fidget_pose = None
+            self._next_fidget = now + random.uniform(2.8, 5.5)
+        if self._fidget_pose or now < self._next_fidget:
+            return
+        choices = [p for p in FIDGET_POSES if p in self.sprites]
+        if not choices:
+            return
+        self._fidget_pose = random.choice(choices)
+        self._fidget_until = now + random.uniform(1.1, 1.9)
 
     def _maybe_follow(self, now):
         if not self.cfg.get("follow_mouse") or self.dragging or self._walk or self.hidden:
@@ -439,10 +480,16 @@ class BuddyWindow(Gtk.Window):
             return self.overlay
         if self.overlay and now >= self.overlay_until:
             self.overlay = None
+        if self._showcase:
+            return self._showcase[0] if self._showcase[0] in self.sprites else "idle"
         if now < self._dance_until:
-            return ("celebrate", "wave", "idle", "celebrate")[self.frame // 4 % 4]
+            dance = [p for p in ("celebrate", "wave", "point", "lean", "idle") if p in self.sprites]
+            return dance[self.frame // 4 % len(dance)] if dance else "idle"
         if self._walk is not None:
-            return "work" if "work" in self.sprites else "idle"
+            walk = [p for p in WALK_POSES if p in self.sprites]
+            return walk[self.frame // 5 % len(walk)] if walk else "idle"
+        if self._fidget_pose and now < self._fidget_until:
+            return self._fidget_pose
         if self.base_mood == "idle" and not self.talking:
             if now - self.last_blink >= self.next_blink:
                 self.last_blink = now
@@ -497,7 +544,9 @@ class BuddyWindow(Gtk.Window):
         cr.restore()
 
         cr.save()
-        if self.facing < 0:
+        pose = self.current_pose()
+        flip = self.facing < 0 and pose not in NO_FLIP
+        if flip:
             cr.translate(x + w, y)
             cr.scale(-scale, scale)
         else:
@@ -788,6 +837,7 @@ class BuddyWindow(Gtk.Window):
             self.talk_toggle = not self.talk_toggle
         self._step_walk(now)
         self._maybe_follow(now)
+        self._maybe_fidget(now)
         if self.bubble_text and self.bubble_until and now > self.bubble_until and not self.talking:
             self.dismiss()
         idle_for = float(self.cfg.get("idle_seconds") or 240)
@@ -826,6 +876,8 @@ class BuddyWindow(Gtk.Window):
             self.trick()
         elif kind == "wander":
             self.wander(announce=True)
+        elif kind == "pose":
+            self.showcase_poses()
         elif kind == "time":
             self.say(desktop.spoken_time(), "think")
         elif kind == "follow":
@@ -937,6 +989,7 @@ def main(argv=None):
         "sing",
         "trick",
         "wander",
+        "pose",
         "time",
         "follow",
         "mood",

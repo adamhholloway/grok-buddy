@@ -115,4 +115,10 @@ def process_all(raw_dir_path=None, out_dir=None):
 
 def missing_poses(character="buddy"):
     folder = sprite_dir(character)
-    return [pose for pose in POSES if not (folder / f"{pose}.png").exists()]
+    raw = raw_dir(character)
+    missing = []
+    for pose in POSES:
+        has_src = (raw / f"{pose}.jpg").exists() or (raw / f"{pose}.png").exists()
+        if has_src and not (folder / f"{pose}.png").exists():
+            missing.append(pose)
+    return missing

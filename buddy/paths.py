@@ -24,7 +24,30 @@ POSES = (
     "sad",
     "sleep",
     "alert",
+    "look_left",
+    "look_right",
+    "point",
+    "lean",
+    "step",
 )
+
+WALK_POSES = ("step", "lean", "wave", "idle")
+FIDGET_POSES = ("look_left", "look_right", "think", "point", "wave", "lean")
+SHOW_POSES = (
+    "idle",
+    "wave",
+    "think",
+    "point",
+    "look_left",
+    "look_right",
+    "lean",
+    "step",
+    "celebrate",
+    "alert",
+    "work",
+    "sad",
+)
+NO_FLIP = {"look_left", "look_right"}
 
 
 def raw_dir(character):

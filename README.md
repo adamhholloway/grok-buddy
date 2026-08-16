@@ -26,6 +26,7 @@ grok-buddy quit
 
 ```bash
 grok-buddy wander
+grok-buddy pose
 grok-buddy dance
 grok-buddy sing
 grok-buddy trick

@@ -42,6 +42,8 @@ def send_cli(argv):
         ok = send({"type": "trick"})
     elif cmd == "wander":
         ok = send({"type": "wander"})
+    elif cmd == "pose":
+        ok = send({"type": "pose"})
     elif cmd == "time":
         ok = send({"type": "time"})
     elif cmd == "follow":
