@@ -511,6 +511,122 @@ PACKS = {
         ],
         "tips": TIPS,
     },
+    "frieren": {
+        "welcome": (
+            "I am Frieren. I will sit here. I have time. "
+            "You may continue your journey. I will watch."
+        ),
+        "switch": "Frieren. I will stay a while. A while, for me, is flexible.",
+        "greetings": [
+            "Do you need a spell, or are you just staring? I do both.",
+            "I have been alive a long time. Your compile is not the longest wait I have had.",
+            "Himmel would have said something encouraging. I will sit here instead.",
+            "I collect spells. You collect tickets. We are not so different.",
+            "Right-click if you want someone louder. I will not be offended. Elves rarely are.",
+        ],
+        "jokes": [
+            "It looks like you are writing a letter. I once took ten years to reply to one. You have time.",
+            "I slept through a century. You slept through a meeting. Relatable.",
+            "I do not rush. The bugs will still be there. That is their one talent.",
+            "A paperclip, a gorilla, and an elf sat on a desktop. I outlived the other two.",
+            "I am not ignoring you. I am considering. It may take a decade.",
+            "Fern would scold me for napping. Do not tell her I have a sleep pose.",
+            "Magic is just debugging with better lighting.",
+            "I would mimic your face, but it already looks like a failed build.",
+        ],
+        "launch": [
+            "Opening Grok Build. I will wait. I am good at waiting.",
+            "Grok Build. Do not waste a perfectly good century.",
+            "Launching. I have seen worse quests.",
+        ],
+        "launch_fail": [
+            "I cannot find Grok Build. Even I cannot search that long.",
+            "No Grok. Then I will sit here. That was the plan anyway.",
+        ],
+        "session_start": [
+            "A new session. I will remember this one. Probably.",
+            "Grok Build is up. I will watch from the cheap seats. I have time.",
+            "It looks like you are about to build something. I once took fifty years to learn a similar spell.",
+        ],
+        "session_end": [
+            "Session over. I will still be here tomorrow. And the century after.",
+            "That is a wrap. I do not do encores. I do lingering.",
+            "Grok left. Elves do not leave. We just pause.",
+        ],
+        "turn_done": [
+            "Turn done. I would clap, but that is a lot of emotion for one day.",
+            "Finished. Himmel would have been proud. I am moderately impressed.",
+            "That is a wrap. Next spell. Or next commit. Same motion.",
+        ],
+        "turn_fail": [
+            "That one failed. I have failed worse spells. You will live.",
+            "Something broke. I will not panic. I do not panic. I nap.",
+            "Snag. Breathe. Rewind if you need another century.",
+        ],
+        "permission": [
+            "Grok wants permission. Even I ask before copying a grimoire. Sometimes.",
+            "Permission prompt. I can wait. Obviously.",
+        ],
+        "click_busy": [
+            "The agent is thinking. So am I. Mine takes longer.",
+            "Busy. Gossip after the spell resolves.",
+        ],
+        "nap": [
+            "Sleeping. Wake me in ten years. Or ten minutes. I will not know the difference.",
+            "Napping. This is a valid magical strategy.",
+        ],
+        "wake": [
+            "I am up. How long was that? Do not answer.",
+            "Back. The ears survived.",
+        ],
+        "songs": [
+            "I do not sing. I hum the same four notes for a decade.",
+            "Ninety nine little bugs in the code. I will get to them. Eventually.",
+            "Daisy, Daisy. I have time. That is the whole song.",
+        ],
+        "stories": [
+            "Once a hero party beat the demon king. Then I sat on a desktop. The saga continues.",
+            "I outlived my party. I will also outlive this session. That is not a threat. It is scheduling.",
+        ],
+        "wander": [
+            "Taking a walk. I may be gone a while. Define while.",
+            "Relocating. The mana feels the same over here.",
+            "New spot. Same century.",
+        ],
+        "follow_on": [
+            "I will follow. Slowly. You will get used to it.",
+            "Lead. I have followed worse heroes.",
+        ],
+        "follow_off": [
+            "Stopped. I was going to stop in a few years anyway.",
+            "I will stay. You go. I have spells to forget.",
+        ],
+        "dance": [
+            "This is not a dance. This is a ritual I have not finished learning.",
+            "I do not dance. I sway at geologic speed.",
+        ],
+        "trick": [
+            "A trick. I call it existing for a thousand years.",
+            "Watch this. Elf. Desktop. That is the whole trick.",
+        ],
+        "attention": [
+            "Hey {name}. I have been trying to get your attention since last Tuesday. Or last decade.",
+            "Ahem. Frieren. I do not ahem often. Use it wisely.",
+        ],
+        "empty_clip": [
+            "Clipboard is empty. I cannot copy a spell that is not there.",
+            "Nothing copied. Copy a grimoire. Or a stack trace. I collect both.",
+        ],
+        "named": [
+            "{name}. I will remember. I remember the important ones. Eventually.",
+            "Okay {name}. I have added you to the list. It is a long list.",
+        ],
+        "search": [
+            "Searching. I will stay here. I am good at that.",
+            "Web is open. Do not fall into a thousand-year rabbit hole. I already did.",
+        ],
+        "tips": TIPS,
+    },
 }
 
 

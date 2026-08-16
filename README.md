@@ -2,7 +2,7 @@
 
 A desktop pet for Grok Build on this computer. They sit on top of your windows, talk in a speech bubble (and out loud if you want), and react when a Grok session starts, needs permission, or finishes a turn.
 
-Four characters: **Buddy**, **Annie**, **Hatsune Miku**, and **Faye Valentine**. Right-click → Character to switch. Annie, Miku, and Faye use Piper; run `scripts/fetch_voice.sh` if they fall back to espeak.
+Five characters: **Buddy**, **Annie**, **Hatsune Miku**, **Faye Valentine**, and **Frieren**. Right-click → Character to switch. The 3D companions use Piper; run `scripts/fetch_voice.sh` if they fall back to espeak.
 
 ## Use it
 
@@ -15,6 +15,7 @@ grok-buddy character annie # switch to Annie
 grok-buddy character buddy # switch to Buddy
 grok-buddy character miku  # Hatsune Miku
 grok-buddy character faye  # Faye Valentine
+grok-buddy character frieren  # Frieren
 grok-buddy tip             # random Grok Build tip
 grok-buddy hide            # vanish for 15 minutes
 grok-buddy quit
