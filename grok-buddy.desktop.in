@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Grok Buddy
+Comment=Desktop assistant for Grok Build
+Exec=@ROOT@/start.sh
+Icon=@ROOT@/assets/sprites/annie/icon.png
+Terminal=false
+Categories=Utility;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-UsesNotifications=false
