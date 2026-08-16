@@ -30,6 +30,17 @@ CHARACTERS = {
         "voice_length": 0.86,
         "sprite_height": 300,
     },
+    "faye": {
+        "id": "faye",
+        "label": "Faye Valentine",
+        "voice_engine": "piper",
+        "voice_model": "en_US-amy-medium",
+        "voice_name": "English (America)+female1",
+        "voice_rate": -18,
+        "voice_pitch": -4,
+        "voice_length": 1.08,
+        "sprite_height": 300,
+    },
 }
 
 DEFAULT_CHARACTER = "annie"

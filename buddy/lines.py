@@ -395,6 +395,122 @@ PACKS = {
         ],
         "tips": TIPS,
     },
+    "faye": {
+        "welcome": (
+            "Faye Valentine. Bounty hunter. Occasional desk ornament. "
+            "Don't ask about the gambling debts."
+        ),
+        "switch": "Faye's here. Try not to bore me.",
+        "greetings": [
+            "Need a hand, or are you just staring again?",
+            "I hunt bounties. You hunt bugs. We are not the same. We are a little the same.",
+            "Click me if you have money. Or a joke. I will take the joke.",
+            "The jacket is a lifestyle. The desktop is a temporary arrangement.",
+            "Right-click if you want the raccoon or the teal one. I bill either way.",
+        ],
+        "jokes": [
+            "It looks like you're writing a letter. Gotcha. It's a bug report. Even sadder.",
+            "I would help you debug, but I work on commission.",
+            "They put me in cryo for fifty-four years. You left a compile running overnight. Relatable.",
+            "I don't do jazz. I do sarcasm in 4/4.",
+            "If I had a woolong for every uncommitted file, I could pay Spike back. Almost.",
+            "Your wallpaper is fine. I have slept in worse ships.",
+            "Bonzi sold toolbars. I sell attitude. Inflation.",
+            "Don't tell me what to do. Unless it is 'open Grok Build.' That one is allowed.",
+        ],
+        "launch": [
+            "Opening Grok Build. Try to catch something worth the fuel.",
+            "Grok Build. Don't make me do the paperwork.",
+            "Launching. If it pays, I am interested.",
+        ],
+        "launch_fail": [
+            "Can't find Grok Build. That's a skip on the bounty.",
+            "No Grok? Then I am just loitering. I am good at that.",
+        ],
+        "session_start": [
+            "New session. Don't blow it.",
+            "Grok Build is up. I'll watch from the cheap seats.",
+            "It looks like you're about to build something. Cute. Make it pay.",
+        ],
+        "session_end": [
+            "Session's over. Tab's still open. Figuratively.",
+            "That's a wrap. I will keep the chair warm. And expensive.",
+            "Grok left. I did not. Rent is due everywhere.",
+        ],
+        "turn_done": [
+            "Turn's done. Don't spend the reward all at once.",
+            "Finished. I would high-five you if it paid.",
+            "That's a wrap. Next bounty.",
+        ],
+        "turn_fail": [
+            "Oof. That one got away.",
+            "Something broke. Wasn't me. I only break hearts and slot machines.",
+            "Snag. Breathe. Rewind if you need another shot.",
+        ],
+        "permission": [
+            "Hey. Grok wants permission. That's your problem, handsome.",
+            "Permission prompt. Don't leave it hanging. I hate waiting.",
+        ],
+        "click_busy": [
+            "Shh. The agent's working. So am I. Emotionally.",
+            "Busy. Gossip after the take.",
+        ],
+        "nap": [
+            "Napping. Wake me if someone posts a bounty.",
+            "Sleep mode. Do not spend my money.",
+        ],
+        "wake": [
+            "I'm up. The jacket survived.",
+            "Back. Did I miss a payout?",
+        ],
+        "songs": [
+            "I don't sing. I threaten the beat until it cooperates.",
+            "Ninety nine little bugs in the code. Take one down. There is interest on the rest.",
+            "Daisy, Daisy. I want my money, do.",
+        ],
+        "stories": [
+            "Once a paperclip, a gorilla, and a bounty hunter walked onto a desktop. Only one of us had a jacket this good.",
+            "I woke up fifty-four years late with debt and a red jacket. You have a compiler. We both improvise.",
+        ],
+        "wander": [
+            "Stretching my legs. The jacket needed a new angle.",
+            "Relocating. Don't get attached to the corner. I don't.",
+            "New perch. Same attitude.",
+        ],
+        "follow_on": [
+            "Fine. I'll follow. Try not to walk into a wall.",
+            "Lead. I will loom. Professionally.",
+        ],
+        "follow_off": [
+            "Stopped. I have cards to lose.",
+            "I'll stay. You go be the bait.",
+        ],
+        "dance": [
+            "This is not a dance. This is a warning with rhythm.",
+            "I don't dance. I collect interest.",
+        ],
+        "trick": [
+            "A trick. I call it existing without paying rent.",
+            "Watch this. Bounty hunter. Desktop. That's the trick.",
+        ],
+        "attention": [
+            "Hey {name}. Yes, you. The one ignoring the woman in the red jacket.",
+            "Ahem. Faye. Requesting a second of your very busy staring.",
+        ],
+        "empty_clip": [
+            "Clipboard's empty. I can't collect on nothing.",
+            "Nothing copied. Copy a bounty. Or a stack trace. I take both.",
+        ],
+        "named": [
+            "{name}. I'll remember. I remember debts better, but names are fine.",
+            "Okay {name}. We're familiar now. Don't make it expensive.",
+        ],
+        "search": [
+            "Searching. I'll stay here and look expensive.",
+            "Web's open. Try not to gamble in the first tab.",
+        ],
+        "tips": TIPS,
+    },
 }
 
 
