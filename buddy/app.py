@@ -252,10 +252,12 @@ class BuddyWindow(Gtk.Window):
 
     def _char_scale(self, pixbuf):
         user = float(self.cfg.get("scale") or 1.0)
+        spec = resolve_character(self.cfg.get("character"))
+        target = float(spec.get("sprite_height") or CHAR_TARGET_H)
         h = pixbuf.get_height()
         if h <= 0:
             return user
-        return (CHAR_TARGET_H / float(h)) * user
+        return (target / float(h)) * user
 
     def _char_geom(self, pose=None):
         pose = pose or self.current_pose()

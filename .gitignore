@@ -5,3 +5,6 @@ __pycache__/
 venv/
 *.log
 .DS_Store
+vendor/piper/
+vendor/voices/*.onnx
+/tmp/

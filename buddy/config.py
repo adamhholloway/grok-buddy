@@ -12,6 +12,8 @@ DEFAULTS = {
     "scale": 1.0,
     "welcomed": False,
     "character": "annie",
+    "voice_engine": "piper",
+    "voice_model": "en_US-amy-medium",
     "voice_name": "English (America)+female1",
     "voice_rate": -10,
     "voice_pitch": 10,

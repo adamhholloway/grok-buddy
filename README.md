@@ -2,7 +2,7 @@
 
 A desktop pet for Grok Build on this computer. They sit on top of your windows, talk in a speech bubble (and out loud if you want), and react when a Grok session starts, needs permission, or finishes a turn.
 
-Two characters: **Buddy** (raccoon in a hard hat) and **Annie** (gothic lolita, Annie voice). Right-click to switch.
+Two characters: **Buddy** (raccoon in a hard hat) and **Annie** (3D gothic companion, neural Amy voice). Right-click to switch. Annie's voice is Piper; run `scripts/fetch_voice.sh` if she falls back to espeak.
 
 ## Use it
 
